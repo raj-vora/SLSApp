@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1094116189861",
+    "firebase_url": "https://hose-vodapav.firebaseio.com",
+    "project_id": "hose-vodapav",
+    "storage_bucket": "hose-vodapav.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094116189861:android:1424c8b84f3af21c210f4c",
+        "android_client_info": {
+          "package_name": "com.example.sls"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1094116189861-ssen65agq2br42a66rbkibffrj0p1vmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm0vQFiFj_J9hcoC-LlAkp97A5v462fCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1094116189861-ssen65agq2br42a66rbkibffrj0p1vmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
