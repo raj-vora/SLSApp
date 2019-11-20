@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class MainActivity extends AppCompatActivity {
     EditText emailId, password;
@@ -49,13 +50,19 @@ public class MainActivity extends AppCompatActivity {
             mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(!task.isSuccessful()){
-                        Toast.makeText(MainActivity.this,"Sign Up Unsuccessful, Please Try Again",Toast.LENGTH_SHORT);
-                    }
-                    else{
+                    if(task.isSuccessful()){
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         intent.putExtra("email", email);
                         startActivity(intent);
+                    }
+                    else{
+                        if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                            Toast.makeText(MainActivity.this,"You are already registered",Toast.LENGTH_SHORT);
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT);
+                        }
+
                     }
                 }
             });

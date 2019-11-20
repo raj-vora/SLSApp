@@ -22,6 +22,7 @@ import io.chirp.chirpsdk.interfaces.ChirpEventListener;
 public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     private ChirpSDK chirp;
+    String email, uid, uname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //Chirp
         chirp = new ChirpSDK(this, "a7cbAC032bad0FBbCA0bAE528", "ac0E3e41c3AfFBE3CED431e5CE4Eee8aC1e793BF353a42bd7E");
-        ChirpError error = chirp.setConfig("WYDrwoPtZlpHZ1sr0ooixtey0XpxmszJv8mNH89KCf9zVccne5oKKqataryJASDQ1RPMMiKOVzv38rG7iQEjM8ApT9Ls0UZ9NYRBWId9c7IWgUwwyiIp7t2Zl76rI6Q5nArnb8OXpiEKnl/F41EgBhRwW1/cYJ1CN5W8O+ba4lfrPXdzqI7M/vaoic4IbI8rUjh70nNY5rZP3NXeK0Xb+qokdBdatFzBpzCNDq3SKMWtVUR8FZA/16tXuGqqC9B6iyjhMN8ttsaPz68ihz4DA3z3W7Btn5HTCTbGDUv+pZTmlgGEJVbwm3azyVzFoZiclxzlX9lxEqrA97SeNH0wu/vdaP85sZABwiKO+6rtS9pT24MvKSGqNWRSDUWIKW6A+jsW6rdZ4zOQdnpaX6MS3vRvJC5bHlZUhuIbVgLAKKGw7V9KC9dWs9FYi21bO8DhsvtvuDHFQZwX7P4EPj2Drvi/I1TlRVwEQft6Q89jnpHVX8jxFETYiWtTwXWW9uZOP6K7btW5gXHtmyyLxoLmC9mV0z0jqmQSdCkkFpU/qWxWUf7qs63H1DoFs6akx6cSUh/0Ydajnq85jIjPs2WkZ8aAn3k+sflaXgE6gmtTUIUBjO2sKxU9Wan25/tQdNKDoGrZjGxJLgaNuAlWCqR7JsBil8bZXxWfQTPumYIjq7iVEa9N31H+t1PQHhyNW51hJPd9KGVkqn9E6c3ywDYeyWhcl+4cG1Nd0gJprckj/fNRk+N82EP0qgH2aNI3+EqPf3uF99PlW3R9MmGyqM5YzJFnmaiveIJz+oRxy0qio/ajf1pUGlXmU7Wv/gAIrtPthJfLlspQADDNmwFhDm0hpkhPAOr6WRb7rB7yxb5nSfc=" +
-                "");
+        ChirpError error = chirp.setConfig("WYDrwoPtZlpHZ1sr0ooixtey0XpxmszJv8mNH89KCf9zVccne5oKKqataryJASDQ1RPMMiKOVzv38rG7iQEjM8ApT9Ls0UZ9NYRBWId9c7IWgUwwyiIp7t2Zl76rI6Q5nArnb8OXpiEKnl/F41EgBhRwW1/cYJ1CN5W8O+ba4lfrPXdzqI7M/vaoic4IbI8rUjh70nNY5rZP3NXeK0Xb+qokdBdatFzBpzCNDq3SKMWtVUR8FZA/16tXuGqqC9B6iyjhMN8ttsaPz68ihz4DA3z3W7Btn5HTCTbGDUv+pZTmlgGEJVbwm3azyVzFoZiclxzlX9lxEqrA97SeNH0wu/vdaP85sZABwiKO+6rtS9pT24MvKSGqNWRSDUWIKW6A+jsW6rdZ4zOQdnpaX6MS3vRvJC5bHlZUhuIbVgLAKKGw7V9KC9dWs9FYi21bO8DhsvtvuDHFQZwX7P4EPj2Drvi/I1TlRVwEQft6Q89jnpHVX8jxFETYiWtTwXWW9uZOP6K7btW5gXHtmyyLxoLmC9mV0z0jqmQSdCkkFpU/qWxWUf7qs63H1DoFs6akx6cSUh/0Ydajnq85jIjPs2WkZ8aAn3k+sflaXgE6gmtTUIUBjO2sKxU9Wan25/tQdNKDoGrZjGxJLgaNuAlWCqR7JsBil8bZXxWfQTPumYIjq7iVEa9N31H+t1PQHhyNW51hJPd9KGVkqn9E6c3ywDYeyWhcl+4cG1Nd0gJprckj/fNRk+N82EP0qgH2aNI3+EqPf3uF99PlW3R9MmGyqM5YzJFnmaiveIJz+oRxy0qio/ajf1pUGlXmU7Wv/gAIrtPthJfLlspQADDNmwFhDm0hpkhPAOr6WRb7rB7yxb5nSfc=" + "");
         if (error.getCode() == 0) {
             Log.v("ChirpSDK: ", "Configured ChirpSDK");
         } else {
@@ -39,8 +39,10 @@ public class HomeActivity extends AppCompatActivity {
         }
         //Firebase
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = user.getEmail();
-        String display = "Welcome Home!\n You are logged in as " + email;
+        email = user.getEmail();
+        uid  = user.getUid();
+        uname = user.getDisplayName();
+        String display = "Hi "+ email + "\nWelcome to Smart Lock!";
         TextView textView = findViewById(R.id.homeTextView);
         textView.setText(display);
     }
@@ -75,8 +77,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void chirpSendButtonClick(View view){
-        EditText enterChirp = findViewById(R.id.enterChirp);
-        String identifier = enterChirp.getText().toString();
+        String identifier = uid;
         byte[] payload = identifier.getBytes(Charset.forName("UTF-8"));
 
         ChirpError error = chirp.send(payload);
