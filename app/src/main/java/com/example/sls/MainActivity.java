@@ -40,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
         name = userName.getText().toString();
         final String email = emailId.getText().toString();
         final String pwd = password.getText().toString();
-        if(email.isEmpty()){
+        if(name.isEmpty()){
+            userName.setError("Please enter your name");
+            userName.requestFocus();
+        }
+        else if(email.isEmpty()){
             emailId.setError("Please enter email id");
             emailId.requestFocus();
         }
@@ -48,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
             password.setError("Please enter your password");
             password.requestFocus();
         }
-        else if (email.isEmpty() && pwd.isEmpty()){
-            Toast.makeText(MainActivity.this,"Fields are empty",Toast.LENGTH_SHORT);
+        else if (email.isEmpty() && pwd.isEmpty() && name.isEmpty()){
+            Toast.makeText(MainActivity.this,"Fields are empty",Toast.LENGTH_SHORT).show();
         }
         else if(!(email.isEmpty() && pwd.isEmpty())){
             mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(MainActivity.this,"New user created",Toast.LENGTH_SHORT);
+                                    Toast.makeText(MainActivity.this,"New user created",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -72,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else{
                         if(task.getException() instanceof FirebaseAuthUserCollisionException){
-                            Toast.makeText(MainActivity.this,"You are already registered",Toast.LENGTH_SHORT);
+                            Toast.makeText(MainActivity.this,"You are already registered",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT);
+                            Toast.makeText(MainActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else{
-            Toast.makeText(MainActivity.this,"Error Occurred!",Toast.LENGTH_SHORT);
+            Toast.makeText(MainActivity.this,"Error Occurred!",Toast.LENGTH_SHORT).show();
         }
     }
 

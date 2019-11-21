@@ -42,6 +42,9 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         email = user.getEmail();
         uid  = user.getUid();
+        if(uname == null){
+            uname = user.getDisplayName();
+        }
         String display = "Hi "+ uname + "\nWelcome to Smart Lock!";
         TextView textView = findViewById(R.id.homeTextView);
         textView.setText(display);
@@ -83,10 +86,10 @@ public class HomeActivity extends AppCompatActivity {
         ChirpError error = chirp.send(payload);
         if (error.getCode() > 0) {
             Log.e("ChirpError: ", error.getMessage());
-            Toast.makeText(HomeActivity.this,"Chirp Error",Toast.LENGTH_SHORT);
+            Toast.makeText(HomeActivity.this,"Chirp Error",Toast.LENGTH_SHORT).show();
         } else {
             Log.v("ChirpSDK: ", "Sent " + identifier);
-            Toast.makeText(HomeActivity.this,"Chirp Sent",Toast.LENGTH_SHORT);
+            Toast.makeText(HomeActivity.this,"Chirp Sent",Toast.LENGTH_SHORT).show();
         }
     }
 }
