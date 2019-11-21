@@ -15,11 +15,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class MainActivity extends AppCompatActivity {
-    EditText emailId, password;
+    EditText emailId, password, userName;
     TextView tvSignIn;
     FirebaseAuth mFirebaseAuth;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +32,14 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         emailId = findViewById(R.id.emailId);
         password = findViewById(R.id.password);
+        userName = findViewById(R.id.userName);
         tvSignIn = findViewById(R.id.signInTextView);
     }
 
     public void signUpButtonClick(View view){
+        name = userName.getText().toString();
         final String email = emailId.getText().toString();
-        String pwd = password.getText().toString();
+        final String pwd = password.getText().toString();
         if(email.isEmpty()){
             emailId.setError("Please enter email id");
             emailId.requestFocus();
@@ -51,8 +56,18 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+                        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                        UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                        user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(MainActivity.this,"New user created",Toast.LENGTH_SHORT);
+                                }
+                            }
+                        });
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        intent.putExtra("email", email);
+                        intent.putExtra("name", name);
                         startActivity(intent);
                     }
                     else{
